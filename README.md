@@ -3,7 +3,6 @@
 AI-powered early warning and safety monitoring for open-pit mines.
 Built for the Smart India Hackathon (Problem ID 25071) by Team MANTHAN.
 
-![Dashboard](screenshots/dhara_main_dashboard.png)
 
 ## About
 
