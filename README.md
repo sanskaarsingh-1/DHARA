@@ -1,155 +1,55 @@
-<div align="center">
-🌍 DHARA
-AI-Powered Early Warning & Safety Monitoring for Open-Pit Mines
+# DHARA
 
-Smart India Hackathon (SIH) · Problem ID 25071 · Team MANTHAN
+AI-powered early warning and safety monitoring for open-pit mines.
+Built for the Smart India Hackathon (Problem ID 25071) by Team MANTHAN.
 
-Show Image Show Image Show Image Show Image Show Image Show Image
+![Dashboard](screenshots/dhara_main_dashboard.png)
 
-Watch the DHARA demo
+## About
 
-▶️ Click the image to watch the full demo
+DHARA turns live camera feeds into a 24/7 safety monitor. A Python backend uses OpenCV to detect hazards such as cracks and loose rocks, and a React dashboard shows the annotated video, risk levels, maps and alerts.
 
-</div>
-📌 Overview
+## Features
 
-Rockfalls and slope failures in open-pit mines threaten lives and costly equipment, and traditional safety protocols are largely reactive. DHARA turns ordinary cameras and site data into a 24/7 early-warning system. It combines live computer-vision analysis, risk prediction, geospatial risk mapping and multi-channel alerts in one web dashboard, so safety teams can act before an incident rather than after it.
+- Live webcam analysis with detections drawn on the video
+- Image upload analysis
+- AI risk prediction and trend charts
+- Risk map of mine zones
+- Alert system with SMS/WhatsApp templates (English and Hindi)
+- Environmental monitoring, reports and activity log
 
-Built entirely on open-source tools and designed to run on commodity hardware, DHARA is a low-cost, scalable alternative to expensive proprietary monitoring systems. The interface is tailored to Indian mining operations (regional mine data, Hindi/English alert messaging, state-level safety contacts).
+## Tech Stack
 
-✨ Features
-Module	What it does
-Live Webcam Analysis	Streams a webcam, phone or drone feed to the backend, where OpenCV detects hazards and returns an annotated feed with bounding boxes.
-Image Analysis	Upload site photos and get detected features (loose rock formations, cracks, steep slopes) with confidence scores, risk levels and recommended actions.
-AI Prediction	Risk forecasting with prediction history and risk-trend charts.
-Risk Map	Geospatial view of mine zones and their current risk levels.
-Alert System	Alert management with history, severity levels and escalation contacts.
-SMS / WhatsApp Alerts	Pre-built emergency and warning templates in English and Hindi, sent to contact groups by zone.
-Pit Hole Alarm	Dedicated monitoring and alarm view for pit hazards.
-Environmental Monitor	Weather and environmental factors (temperature, wind, humidity) and how they affect slope stability.
-Analytics & Reports	Charts (line, area, bar, pie, radar, gauge, treemap, bubble) and generated safety reports.
-Activity Log, Profile & Settings	Audit trail, user profile and configurable thresholds.
-Hazards detected by the vision engine
-Hazard	Severity
-Cracks	🟠 High
-Loose rock	🟡 Medium
-Gas leak	🔴 Critical
-Structural damage	🟠 High
-Slope instability	🔴 Critical
-Water accumulation	🟡 Medium
+- **Frontend:** React, Vite, Tailwind CSS, Recharts
+- **Backend:** Python, Flask, OpenCV, NumPy
 
-Overall site risk is rolled up into four levels: Critical, High, Medium, Low.
+## Run Locally
 
-🖼️ Screenshots
-	
-Show Image	Show Image
-Show Image	Show Image
-Show Image	Show Image
+**Backend**
 
-More images are in screenshots/, and the model pipeline diagram and SIH presentation are in docs/.
-
-🏗️ Architecture
-┌──────────────────────────┐        HTTP / JSON        ┌─────────────────────────────┐
-│  React + Vite frontend   │  ───────────────────────► │      Flask backend          │
-│  Tailwind · Recharts     │   frames (base64)         │  OpenCV: Canny edges,       │
-│  Lucide icons            │  ◄───────────────────────  │  contour analysis, risk     │
-│  http://localhost:5173   │   detections + risk level │  scoring  :5000             │
-└──────────────────────────┘                           └─────────────────────────────┘
-
-Frontend: React, React Router, Vite, Tailwind CSS, Recharts, Lucide Icons Backend: Python, Flask, Flask-CORS, OpenCV, NumPy, Pillow
-
-📁 Project Structure
-DHARA/
-├── backend/
-│   ├── app.py                # Flask API + OpenCV risk detector
-│   ├── start_backend.py      # Backend launcher
-│   └── requirements.txt
-├── src/
-│   ├── components/           # Dashboards, alerts, maps, webcam, charts/
-│   ├── contexts/             # Auth context
-│   ├── data/                 # Mine, zone and sensor data
-│   ├── App.jsx               # Routes
-│   └── main.jsx
-├── screenshots/              # UI screenshots
-├── docs/                     # Pipeline diagram + SIH presentation
-├── AI_BACKEND_SETUP.md       # Detailed backend / phone-camera guide
-├── start_ai_backend.sh       # Linux/macOS backend starter
-└── index.html
-🚀 Getting Started
-Prerequisites
-Node.js 18+ and npm
-Python 3.8+ and pip
-A modern browser (camera access requires localhost or HTTPS)
-1. Clone the repository
-bash
-git clone https://github.com/YOUR-USERNAME/DHARA.git
-cd DHARA
-2. Start the backend
-bash
+```bash
 cd backend
 python -m venv venv
-
-# Windows
-venv\Scripts\activate
-# macOS / Linux
-source venv/bin/activate
-
+venv\Scripts\activate        # macOS/Linux: source venv/bin/activate
 pip install -r requirements.txt
 python app.py
+```
 
-The API runs at http://localhost:5000.
+Runs at http://localhost:5000
 
-3. Start the frontend
+**Frontend** (new terminal, project root)
 
-In a new terminal, from the project root:
-
-bash
+```bash
 npm install
 npm run dev
+```
 
-Open http://localhost:5173.
+Runs at http://localhost:5173
 
-4. Log in
+**Demo login:** `admin@mineguard.com` / `admin123`
 
-The demo build uses a built-in demo account:
+## Note
 
-Email:    admin@mineguard.com
-Password: admin123
+This is a prototype for demonstration. Dashboard data is simulated, and it should not be used as a certified safety system.
 
-⚠️ These are demo credentials hard-coded for the hackathon prototype. Replace them with real authentication before any production use.
 
-Then open Live Webcam in the sidebar, click Start Camera, and allow camera access.
-
-📱 Using a phone camera
-
-Connect the phone to the same Wi-Fi as your computer, find your computer's local IP (ipconfig / ifconfig), and open http://YOUR_IP:5173 on the phone. Browsers may require HTTPS for camera access on non-localhost addresses. See AI_BACKEND_SETUP.md for details.
-
-🔌 API Reference
-Method	Endpoint	Description
-GET	/api/health	Server status
-POST	/api/process_frame	Analyse a camera frame and return detections
-POST	/api/start_detection	Start continuous detection
-POST	/api/stop_detection	Stop detection
-GET	/api/detection_status	Current detection results
-POST	/api/calibrate	Adjust detection parameters
-POST	/api/emergency_stop	Emergency stop for all detection
-⚠️ Limitations & Disclaimer
-The vision engine uses classical computer-vision techniques (edge detection and contour analysis). It is a decision-support prototype, not a certified safety system.
-Dashboard data, sensor readings and alert history are simulated sample data for demonstration.
-Always consult certified mine safety professionals for official assessments and never rely on this software alone for evacuation decisions.
-🗺️ Roadmap
- Train and integrate deep-learning models (e.g. YOLO or segmentation) for detection
- Connect real sensors (slope radar, piezometers, geotechnical gauges)
- Real SMS/WhatsApp delivery via a messaging provider
- Proper authentication and role-based access
- Docker setup and deployment guide
-👥 Team MANTHAN
-Prakash Kumar Prajapati (Team Leader)
-Abhinam Kumar Mahato
-Satish Kumar
-Jyoti Kumari
-Kumari Vaishnavi
-Sumit Ghosh
-📄 License
-
-Add a license of your choice (e.g. MIT) before publishing.
